@@ -1,5 +1,5 @@
-#ifndef JETTIRGGERALGORITHM_H
-#define JETTIRGGERALGORITHM_H
+#ifndef JetTriggerAlgorithm_H
+#define JetTriggerAlgorithm_H
 /*
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -11,12 +11,12 @@
 
 class PatchContainer;
 
-class JetTirggerAlgorithm: public TriggerAlgorithm {
+class JetTriggerAlgorithm: public TriggerAlgorithm {
 public:
-	JetTirggerAlgorithm();
-	virtual ~JetTirggerAlgorithm();
+	JetTriggerAlgorithm();
+	virtual ~JetTriggerAlgorithm();
 
-	PatchContainer *FindPatches(TriggerChannelMap * channels) const;
+	std::vector<RawPatch> FindPatches(TriggerChannelMap * channels) const;
 };
 
-#endif /* JETTIRGGERALGORITHM_H */
+#endif /* JetTriggerAlgorithm_H */

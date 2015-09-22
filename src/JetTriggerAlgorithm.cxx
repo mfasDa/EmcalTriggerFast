@@ -23,7 +23,7 @@
 /**
  * Constructor
  */
-JetTirggerAlgorithm::JetTirggerAlgorithm():
+JetTriggerAlgorithm::JetTriggerAlgorithm():
   TriggerAlgorithm()
 {
 }
@@ -31,9 +31,43 @@ JetTirggerAlgorithm::JetTirggerAlgorithm():
 /**
  * Destructor
  */
-JetTirggerAlgorithm::~JetTirggerAlgorithm() {
+JetTriggerAlgorithm::~JetTriggerAlgorithm() {
 }
 
-PatchContainer *JetTirggerAlgorithm::FindPatches(TriggerChannelMap *output) const {
+/**
+ * Gamma trigger algorithm
+ * 1. Loop over all rows (- patchsize) to get the starting position of the patch
+ * 2. Loop over ADC values in the 16x16 window
+ * 3. Sorting of the trigger patches so that the highest energetic patch (main patch is the first)
+ * 4. Fill the output trigger object
+ * @param channes Input channel map
+ * @return vector with trigger patches
+ */
+std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(TriggerChannelMap *channels) const {
+	std::vector<RawPatch> rawpatches;
 
+	Double_t adcsum(0);
+	for(int irow = 0; irow < channels->GetNumberOfRows() - 15; ++irow){
+		for(int icol = 0; icol < channels->GetNumberOfCols() - 15; ++icol){
+			// 16x16 window
+			adcsum = 0;
+			for(int jrow = 0; jrow < 16; jrow++)
+				for(int jcol = 0; jcol < 16; jcol++)
+					adcsum += channels->GetADC(icol + jcol, irow + jrow);
+
+			// make decision, low and high threshold
+			Int_t triggerBits(0);
+			if(adcsum > fTriggerSetup->GetThresholdJetHigh()) SETBIT(triggerBits, fTriggerSetup->GetTriggerBitConfiguration().GetJetHighBit());
+			if(adcsum > fTriggerSetup->GetThresholdJetLow()) SETBIT(triggerBits, fTriggerSetup->GetTriggerBitConfiguration().GetJetLowBit());
+
+			// Set special bit
+			if(triggerBits){
+				rawpatches.push_back(RawPatch(icol, irow, adcsum, triggerBits));
+			}
+		}
+	}
+
+	// sort patches so that the main patch appears first
+	std::sort(rawpatches.begin(), rawpatches.end());
+	return rawpatches;
 }

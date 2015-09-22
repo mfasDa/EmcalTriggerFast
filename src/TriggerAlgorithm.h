@@ -12,16 +12,17 @@ class TriggerChannelMap;
 class TriggerSetup;
 
 /**
- * @struct RawPatch
+ * @class RawPatch
  * @brief Helper structure for raw patches
  *
  * Stores minimal information of reconstructed patches, such as row, column, and
  * reconstructed amplitude
  */
-struct RawPatch{
+class RawPatch{
 	/**
 	 * Default constructor, initializing all values with -1
 	 */
+public:
 	RawPatch():
 		fCol(-1.),
 		fRow(-1.),
@@ -88,12 +89,12 @@ private:
  *
  * Base class for trigger algorithm implementations for the EMCAL trigger.
  */
-class TriggerAlgorithm: public TObject {
+class TriggerAlgorithm {
 public:
 	TriggerAlgorithm();
 	virtual ~TriggerAlgorithm() {}
 
-	PatchContainer *FindPatches(TriggerChannelMap * channels) const = 0;
+	virtual std::vector<RawPatch> FindPatches(TriggerChannelMap * channels) const = 0;
 	/**
 	 * Set the trigger channel ADC map used to create the trigger patches
 	 * @param inputdata input

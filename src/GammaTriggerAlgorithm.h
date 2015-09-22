@@ -24,7 +24,7 @@ public:
 	GammaTriggerAlgorithm();
 	virtual ~GammaTriggerAlgorithm();
 
-	PatchContainer *FindPatches(TriggerChannelMap *channels) const;
+	std::vector<RawPatch> FindPatches(TriggerChannelMap * channels) const;
 
 };
 #endif /* GammaTriggerAlgorithm_H */
