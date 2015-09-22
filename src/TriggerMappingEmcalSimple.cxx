@@ -26,10 +26,10 @@
  * Phi Limits:
  * EMCAL
  * Sector 0: min(1.40413), max(1.73746), dist(0.333328)
- * Sector 1: min(1.7532), max(2.08653), dist(0.333328)
+ * Sector 1: min(1.7532),  max(2.08653), dist(0.333328)
  * Sector 2: min(2.10226), max(2.43559), dist(0.333328)
  * Sector 3: min(2.45133), max(2.78466), dist(0.333328)
- * Sector 4: min(2.8004), max(3.13372), dist(0.333328)
+ * Sector 4: min(2.8004),  max(3.13372), dist(0.333328)
  * Sector 5: min(3.14946), max(3.26149), dist(0.112032)
  *
  * DCAL + PHOS
@@ -43,7 +43,7 @@ TriggerMappingEmcalSimple::TriggerMappingEmcalSimple():
 	fPhiLimitsDCALPHOS(),
 	fEtaMin(-0.668305),
 	fEtaMax(0.668305),
-	fEtaSizeFOR()
+	fEtaSizeFOR(0,027846)
 {
 	fPhiLimitsEMCAL.push_back(SectorPhi(0, 1.40413, 1.73746, 12));
 	fPhiLimitsEMCAL.push_back(SectorPhi(1, 1.7532, 2.08653, 12));
@@ -143,6 +143,14 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(double eta,
 		row += rowsec;
 	}
 	// then get the column
+	// assume linear model, mapping from positive to negative eta as obtained from fastor + cell mapping from AliEMCALGeometry
+	int colcount = 0;
+	for(double etaiter = fEtaMax; etaiter > fEtaMin; etaiter -= fEtaSizeFOR){
+		if(eta > etaiter - fEtaSizeFOR && eta < etaiter){
+			col = colcount;
+			break;
+		}
+	}
 
 	result.Set(row, col, TriggerChannel::kEMCAL);
 	return result;
@@ -175,6 +183,14 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(double e
 		row += rowsec;
 	}
 	// then get the column
+	// assume linear model, mapping from positive to negative eta as obtained from fastor + cell mapping from AliEMCALGeometry
+	int colcount = 0;
+	for(double etaiter = fEtaMax; etaiter > fEtaMin; etaiter -= fEtaSizeFOR){
+		if(eta > etaiter - fEtaSizeFOR && eta < etaiter){
+			col = colcount;
+			break;
+		}
+	}
 
 	result.Set(row, col, TriggerChannel::kDCALPHOS);
 	return result;
