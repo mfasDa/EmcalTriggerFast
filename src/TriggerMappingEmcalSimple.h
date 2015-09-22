@@ -32,22 +32,22 @@ public:
 	{}
 	~TriggerChannel() {}
 
-	void Set(Int_t row, Int_t col, Detector det){
+	void Set(int row, int col, Detector det){
 		fRow = row;
 		fCol = col;
 		fDetector = det;
 	}
 
-	Int_t GetRow() const { if(!fDetector == kUndefined) throw TriggerChannelException(); return fRow; }
-	Int_t GetCol() const { if(!fDetector == kUndefined) throw TriggerChannelException(); return fCol; }
+	int GetRow() const { if(!fDetector == kUndefined) throw TriggerChannelException(); return fRow; }
+	int GetCol() const { if(!fDetector == kUndefined) throw TriggerChannelException(); return fCol; }
 
-	Bool_t IsEMCAL() const { if(fDetector == kEMCAL) return true; return false; }
-	Bool_t IsDCALPHOS() const { if(fDetector == kDCALPHOS) return true; return false; }
+	bool IsEMCAL() const { if(fDetector == kEMCAL) return true; return false; }
+	bool IsDCALPHOS() const { if(fDetector == kDCALPHOS) return true; return false; }
 
 private:
 	Detector		fDetector;
-	Int_t 			fRow;
-	Int_t 			fCol;
+	int 			fRow;
+	int 			fCol;
 }
 
 class TriggerMappingEmcalSimple {
@@ -55,42 +55,42 @@ public:
 	TriggerMappingEmcalSimple();
 	virtual ~TriggerMappingEmcalSimple() {}
 
-	TriggerChannel GetPositionFromEtaPhi(Double_t eta, Double_t phi) const;
-	Bool_t IsEMCAL(Double_t eta, Double_t phi) const;
-	Bool_t IsDCALPHOS(Double_t eta, Double_t phi) const;
+	TriggerChannel GetPositionFromEtaPhi(double eta, double phi) const;
+	bool IsEMCAL(double eta, double phi) const;
+	bool IsDCALPHOS(double eta, double phi) const;
 
 protected:
 	class SectorPhi{
 	public:
-		SectorPhi(Int_t sectorID, double phiMin, double phiMax, Int_t nrow);
+		SectorPhi(int sectorID, double phiMin, double phiMax, int nrow);
 		~SectorPhi() {}
 
-		Int_t	 		GetSectorID() const { return fSectorID; }
-		Int_t	 		GetNumberOfRows() const { return fNRows; }
-		Double_t	 	GetPhiMin() const { return fMinimum; }
-		Double_t 		GetPhiMax() const { return fMaximum; }
+		int	 		GetSectorID() const { return fSectorID; }
+		int	 		GetNumberOfRows() const { return fNRows; }
+		double	 	GetPhiMin() const { return fMinimum; }
+		double 		GetPhiMax() const { return fMaximum; }
 
-		Bool_t IsInSector(Double_t phi)  const { return phi > fMinimum && phi < fMaximum; }
-		Int_t GetRowNumberInSector(Double_t phi) const;
+		bool IsInSector(double phi)  const { return phi > fMinimum && phi < fMaximum; }
+		int GetRowNumberInSector(double phi) const;
 
 	private:
-		Int_t 			fSectorID;			///< ID of the sector, starting from 0 (Indices separate for EMCAL and DCAL)
-		Double_t 		fMinimum;			///< Min. phi of the sector (0 - 2 pi)
-		Double_t		fMaximum;			///< Max. phi of the sector (0 - 2 pi)
-		Int_t 			fNRows;  			///< Number of rows in a sector in phi (12 for big supermodules, 4 for small)
+		int 			fSectorID;			///< ID of the sector, starting from 0 (Indices separate for EMCAL and DCAL)
+		double 			fMinimum;			///< Min. phi of the sector (0 - 2 pi)
+		double			fMaximum;			///< Max. phi of the sector (0 - 2 pi)
+		int 			fNRows;  			///< Number of rows in a sector in phi (12 for big supermodules, 4 for small)
 	};
 
-	const SectorPhi *FindSector(Double_t phi, Bool_t isEMCAL) const;
-	const SectorPhi *FindSectorEMCAL(Double_t phi) const;
-	const SectorPhi *FindSectorDCALPHOS(Double_t phi) const;
-	TriggerChannel GetPositionFromEtaPhiEMCAL(Double_t eta, Double_t phi) const;
-	TriggerChannel GetPositionFromEtaPhiDCALPHOS(Double_t eta, Double_t phi) const;
+	const SectorPhi *FindSector(double phi, bool isEMCAL) const;
+	const SectorPhi *FindSectorEMCAL(double phi) const;
+	const SectorPhi *FindSectorDCALPHOS(double phi) const;
+	TriggerChannel GetPositionFromEtaPhiEMCAL(double eta, double phi) const;
+	TriggerChannel GetPositionFromEtaPhiDCALPHOS(double eta, double phi) const;
 
 	std::vector<SectorPhi>		fPhiLimitsEMCAL;
 	std::vector<SectorPhi> 		fPhiLimitsDCALPHOS;
-	Double_t					fEtaMin;
-	Double_t					fEtaMax;
-	Double_t					fEtaSizeFOR;
+	double						fEtaMin;
+	double						fEtaMax;
+	double						fEtaSizeFOR;
 };
 
 #endif /* TRIGGERMAPPINGEMCALSIMPLE_H_ */

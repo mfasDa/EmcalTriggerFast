@@ -16,6 +16,8 @@
  *  You should have received a copy of the GNU General Public License           *
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.       *
  ********************************************************************************/
+#include <cstdlib>
+
 #include "TriggerMappingEmcalSimple.h"
 
 /**
@@ -70,7 +72,7 @@ TriggerMappingEmcalSimple::~TriggerMappingEmcalSimple() {
  * @param phi Phi of the particle
  * @return The trigger channel corresponding to the Eta-Phi position of the particle.
  */
-TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhi(Double_t eta, Double_t phi) const{
+TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhi(double eta, double phi) const{
 	if(IsEMCAL(eta, phi)){
 		return GetPositionFromEtaPhiEMCAL(eta, phi);
 	} else if(IsDCALPHOS(eta, phi)){
@@ -85,9 +87,9 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhi(Double_t eta, Do
  * @param phi Particle Phi
  * @return True if the particle is in the active area of the EMCAL trigger, false otherwise
  */
-Bool_t TriggerMappingEmcalSimple::IsEMCAL(Double_t eta, Double_t phi) const{
+bool TriggerMappingEmcalSimple::IsEMCAL(double eta, double phi) const{
 	if(eta < fEtaMin || eta > fEtaMax) return false;
-	Bool_t hasfound(false)
+	bool hasfound(false)
 	for(std::vector<SectorPhi>::const_iterator phiit = fPhiLimitsEMCAL.begin(); phiit != fPhiLimitsEMCAL.end(); ++phiit){
 		if(phiit->IsInSector(phi)){
 			hasfound = true;
@@ -103,9 +105,9 @@ Bool_t TriggerMappingEmcalSimple::IsEMCAL(Double_t eta, Double_t phi) const{
  * @param phi Particle Phi
  * @return True if the particle is in the active area of the EMCAL trigger, false otherwise
  */
-Bool_t TriggerMappingEmcalSimple::IsDCALPHOS(Double_t eta, Double_t phi) const{
+bool TriggerMappingEmcalSimple::IsDCALPHOS(double eta, double phi) const{
 	if(eta < fEtaMin || eta > fEtaMax) return false;
-	Bool_t hasfound(false)
+	bool hasfound(false)
 	for(std::vector<SectorPhi>::const_iterator phiit = fPhiLimitsDCALPHOS.begin(); phiit != fPhiLimitsDCALPHOS.end(); ++phiit){
 		if(phiit->IsInSector(phi)){
 			hasfound = true;
@@ -122,9 +124,9 @@ Bool_t TriggerMappingEmcalSimple::IsDCALPHOS(Double_t eta, Double_t phi) const{
  * @param phi Particle Phi
  * @return Trigger position in the EMCAL
  */
-TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(Double_t eta, Double_t phi) const{
+TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(double eta, double phi) const{
 	TriggerChannel result;
-	Int_t row(-1), col(-1);
+	int row(-1), col(-1);
 	// first get the row
 	const SectorPhi *emcsec = FindSectorEMCAL(phi);
 	if(!emcsec) 		// dead area
@@ -132,7 +134,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(Double_t et
 	if(emcsec->GetSectorID() == 0){
 		row = emcsec->GetRowNumberInSector(phi);
 	} else {
-		Int_t rowsec = emcsec->GetRowNumberInSector(phi);
+		int rowsec = emcsec->GetRowNumberInSector(phi);
 		row = 0;
 		for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsEMCAL.begin(); secit != fPhiLimitsEMCAL.end(); ++secit){
 			if(secit->GetSectorID() < emcsec->GetSectorID()) row += secit->GetNumberOfRows();
@@ -153,9 +155,9 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(Double_t et
  * @param phi Particle Phi
  * @return Trigger position in the EMCAL
  */
-TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(Double_t eta, Double_t phi) const{
+TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(double eta, double phi) const{
 	TriggerChannel result;
-	Int_t row(-1), col(-1);
+	int row(-1), col(-1);
 	// first get the row
 	// first get the row
 	const SectorPhi *emcsec = FindSectorDCALPHOS(phi);
@@ -164,7 +166,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(Double_t
 	if(emcsec->GetSectorID() == 0){
 		row = emcsec->GetRowNumberInSector(phi);
 	} else {
-		Int_t rowsec = emcsec->GetRowNumberInSector(phi);
+		int rowsec = emcsec->GetRowNumberInSector(phi);
 		row = 0;
 		for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsDCALPHOS.begin(); secit != fPhiLimitsDCALPHOS.end(); ++secit){
 			if(secit->GetSectorID() < emcsec->GetSectorID()) row += secit->GetNumberOfRows();
@@ -184,7 +186,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(Double_t
  * @param isEMCAL Switch whether to test EMCAL or DCAL/PHOS
  * @return Full sector information (NULL if not found)
  */
-const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSector(Double_t phi, Bool_t isEMCAL) const {
+const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSector(double phi, bool isEMCAL) const {
 	if(isEMCAL) return FindSectorEMCAL(phi);
 	else return FindSectorDCALPHOS(phi);
 }
@@ -194,7 +196,7 @@ const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSecto
  * @param phi Particle/Track phi
  * @return Sector information according to the phi (NULL if not found)
  */
-const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSectorEMCAL(Double_t phi) const {
+const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSectorEMCAL(double phi) const {
 	SectorPhi *result = NULL;
 	for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsEMCAL.begin(); secit != fPhiLimitsEMCAL.end(); ++secit){
 		if(secit->IsInSector(phi)){
@@ -210,7 +212,7 @@ const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSecto
  * @param phi Particle/Track phi
  * @return Sector information according to the phi (NULL if not found)
  */
-const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSectorDCALPHOS(Double_t phi) const {
+const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSectorDCALPHOS(double phi) const {
 	SectorPhi *result = NULL;
 	for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsDCALPHOS.begin(); secit != fPhiLimitsDCALPHOS.end(); ++secit){
 		if(secit->IsInSector(phi)){
@@ -228,7 +230,7 @@ const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSecto
  * @param phiMax Max. phi of the sector
  * @param nrow Number of rows in the sector
  */
-TriggerMappingEmcalSimple::SectorPhi::SectorPhi(Int_t sectorID, double phiMin, double phiMax, Int_t nrow):
+TriggerMappingEmcalSimple::SectorPhi::SectorPhi(int sectorID, double phiMin, double phiMax, int nrow):
 	fSectorID(sectorID),
 	fMinimum(phiMin),
 	fMaximum(phiMax),
@@ -240,11 +242,11 @@ TriggerMappingEmcalSimple::SectorPhi::SectorPhi(Int_t sectorID, double phiMin, d
  * @param phi
  * @return Row number of the FastOR within the chamber (-1 if not found)
  */
-Int_t TriggerMappingEmcalSimple::SectorPhi::GetRowNumberInSector(Double_t phi) const {
-	Int_t rownumber = -1;
-	Double_t phiwidth = (fMaximum - fMinimum) / 12.;
-	Int_t rowcounter = 0;
-	for(Double_t phiiter = fMinimum; phiiter < fMaximum; phiiter += phiwidth){
+int TriggerMappingEmcalSimple::SectorPhi::GetRowNumberInSector(double phi) const {
+	int rownumber = -1;
+	double phiwidth = (fMaximum - fMinimum) / 12.;
+	int rowcounter = 0;
+	for(double phiiter = fMinimum; phiiter < fMaximum; phiiter += phiwidth){
 		if(phi > phiiter && phi < phiiter + phiwidth){
 			rownumber = rowcounter;
 			break;
