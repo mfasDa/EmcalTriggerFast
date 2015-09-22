@@ -44,7 +44,7 @@ GammaTriggerAlgorithm::~GammaTriggerAlgorithm() {
  * @param channes Input channel map
  * @return vector with trigger patches
  */
-std::vector<RawPatch> GammaTriggerAlgorithm::FindPatches(TriggerChannelMap *channels) const {
+std::vector<RawPatch> GammaTriggerAlgorithm::FindPatches(const TriggerChannelMap *channels) const {
 	std::vector<RawPatch> rawpatches;
 
 	Double_t adcsum(0);

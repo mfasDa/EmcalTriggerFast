@@ -43,7 +43,7 @@ JetTriggerAlgorithm::~JetTriggerAlgorithm() {
  * @param channes Input channel map
  * @return vector with trigger patches
  */
-std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(TriggerChannelMap *channels) const {
+std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *channels) const {
 	std::vector<RawPatch> rawpatches;
 
 	Double_t adcsum(0);

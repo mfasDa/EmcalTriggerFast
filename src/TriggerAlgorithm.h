@@ -23,11 +23,17 @@ class RawPatch{
 	 * Default constructor, initializing all values with -1
 	 */
 public:
+	enum Patchtype {
+		kEMCALpatch,
+		kDCALPHOSpatch,
+		kUndefPatch
+	};
 	RawPatch():
 		fCol(-1.),
 		fRow(-1.),
 		fADC(-1.),
-		fTriggerBits(0)
+		fTriggerBits(0),
+		fPatchType(kUndefPatch)
 	{}
 	/**
 	 * Constructor, initializing position and amplitude
@@ -39,7 +45,8 @@ public:
 		fCol(col),
 		fRow(row),
 		fADC(adc),
-		fTriggerBits(triggerBits)
+		fTriggerBits(triggerBits),
+		fPatchType(kUndefPatch)
 	{}
 	/**
 	 * Destructor
@@ -54,6 +61,12 @@ public:
 	bool operator<(const RawPatch & other) const {
 		return fADC < other.fADC;
 	}
+
+	/**
+	 * Set the type of the patch (EMCAL or DCAL-PHOS)
+	 * @param ptype Type of the patch
+	 */
+	void SetPatchType(Patchtype ptype) { fPatchType = ptype; }
 
 	/**
 	 * Get starting row of the patch
@@ -76,11 +89,24 @@ public:
 	 */
 	int GetTriggerBits() const { return fTriggerBits; }
 
+	/**
+	 * Check whether patch is of type EMCAL
+	 * @return True if patch is of type EMCAL, false otherwise
+	 */
+	bool IsEMCAL() const { return fPatchType == kEMCALpatch; }
+
+	/**
+	 * Check whether patch is of type DCAL-PHOS
+	 * @return True if patch is of type DCAL-PHOS, false otherwise
+	 */
+	bool IsDCALPHOS() const { return fPatchType == kDCALPHOSpatch; }
+
 private:
 	int         fCol;           ///< Lower left column in col-row coordinate space
 	int         fRow;           ///< Lower left row in col-row coordinate space
 	double      fADC;           ///< ADC value of the raw patch
 	int         fTriggerBits;   ///< Tigger bit settings
+	Patchtype	fPatchType;		///< Type of the trigger patch
 };
 
 /**
@@ -94,7 +120,7 @@ public:
 	TriggerAlgorithm();
 	virtual ~TriggerAlgorithm() {}
 
-	virtual std::vector<RawPatch> FindPatches(TriggerChannelMap * channels) const = 0;
+	virtual std::vector<RawPatch> FindPatches(const TriggerChannelMap * channels) const = 0;
 	/**
 	 * Set the trigger channel ADC map used to create the trigger patches
 	 * @param inputdata input
