@@ -43,7 +43,7 @@ TriggerMappingEmcalSimple::TriggerMappingEmcalSimple():
 	fPhiLimitsDCALPHOS(),
 	fEtaMin(-0.668305),
 	fEtaMax(0.668305),
-	fEtaSizeFOR(0,027846)
+	fEtaSizeFOR(0.027846)
 {
 	fPhiLimitsEMCAL.push_back(SectorPhi(0, 1.40413, 1.73746, 12));
 	fPhiLimitsEMCAL.push_back(SectorPhi(1, 1.7532, 2.08653, 12));
@@ -89,7 +89,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhi(double eta, doub
  */
 bool TriggerMappingEmcalSimple::IsEMCAL(double eta, double phi) const{
 	if(eta < fEtaMin || eta > fEtaMax) return false;
-	bool hasfound(false)
+	bool hasfound(false);
 	for(std::vector<SectorPhi>::const_iterator phiit = fPhiLimitsEMCAL.begin(); phiit != fPhiLimitsEMCAL.end(); ++phiit){
 		if(phiit->IsInSector(phi)){
 			hasfound = true;
@@ -107,7 +107,7 @@ bool TriggerMappingEmcalSimple::IsEMCAL(double eta, double phi) const{
  */
 bool TriggerMappingEmcalSimple::IsDCALPHOS(double eta, double phi) const{
 	if(eta < fEtaMin || eta > fEtaMax) return false;
-	bool hasfound(false)
+	bool hasfound(false);
 	for(std::vector<SectorPhi>::const_iterator phiit = fPhiLimitsDCALPHOS.begin(); phiit != fPhiLimitsDCALPHOS.end(); ++phiit){
 		if(phiit->IsInSector(phi)){
 			hasfound = true;
@@ -213,7 +213,7 @@ const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSecto
  * @return Sector information according to the phi (NULL if not found)
  */
 const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSectorEMCAL(double phi) const {
-	SectorPhi *result = NULL;
+	const SectorPhi *result = NULL;
 	for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsEMCAL.begin(); secit != fPhiLimitsEMCAL.end(); ++secit){
 		if(secit->IsInSector(phi)){
 			result = &(*secit);
@@ -229,7 +229,7 @@ const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSecto
  * @return Sector information according to the phi (NULL if not found)
  */
 const TriggerMappingEmcalSimple::SectorPhi *TriggerMappingEmcalSimple::FindSectorDCALPHOS(double phi) const {
-	SectorPhi *result = NULL;
+	const SectorPhi *result = NULL;
 	for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsDCALPHOS.begin(); secit != fPhiLimitsDCALPHOS.end(); ++secit){
 		if(secit->IsInSector(phi)){
 			result = &(*secit);

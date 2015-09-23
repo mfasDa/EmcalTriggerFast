@@ -74,9 +74,14 @@ public:
 	int GetNumberOfRows() const { return fNADCRows; }
 
 protected:
+
+	inline int GetIndexInArray(int col, int row) const;
 	int                     fNADCCols;      ///< Number of columns
 	int                     fNADCRows;      ///< Number of rows
 	double                  *fADC;          ///< Array of Trigger ADC values
 };
 
+int TriggerChannelMap::GetIndexInArray(int col, int row) const {
+	return fNADCCols * row + col;
+}
 #endif /* TRIGGERCHANNELMAP_H */

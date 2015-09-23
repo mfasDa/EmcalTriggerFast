@@ -22,7 +22,6 @@
  * Dummy constructor for the configuraiton base classes, not to be callled
  */
 TriggerBitConfig::TriggerBitConfig():
-TNamed(),
 fL0Bit(-1),
 fJHighBit(-1),
 fJLowBit(-1),
@@ -42,13 +41,12 @@ fTriggerTypesEnd(-1)
  * @param mcoffset Monte Carlo offset bit (not used here)
  */
 TriggerBitConfig::TriggerBitConfig(
-		Int_t l0bit,
-		Int_t jhighbit,
-		Int_t jlowbit,
-		Int_t ghighbit,
-		Int_t glowbit,
-		Int_t mcoffset):
-    		TNamed("EmcalTriggerBitConfigUninit", ""),
+		int l0bit,
+		int jhighbit,
+		int jlowbit,
+		int ghighbit,
+		int glowbit,
+		int mcoffset):
 			fL0Bit(l0bit),
 			fJHighBit(jhighbit),
 			fJLowBit(jlowbit),

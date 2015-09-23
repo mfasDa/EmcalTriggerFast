@@ -46,7 +46,7 @@ JetTriggerAlgorithm::~JetTriggerAlgorithm() {
 std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *channels) const {
 	std::vector<RawPatch> rawpatches;
 
-	Double_t adcsum(0);
+	double adcsum(0);
 	for(int irow = 0; irow < channels->GetNumberOfRows() - 15; ++irow){
 		for(int icol = 0; icol < channels->GetNumberOfCols() - 15; ++icol){
 			// 16x16 window
@@ -56,9 +56,9 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *
 					adcsum += channels->GetADC(icol + jcol, irow + jrow);
 
 			// make decision, low and high threshold
-			Int_t triggerBits(0);
-			if(adcsum > fTriggerSetup->GetThresholdJetHigh()) SETBIT(triggerBits, fTriggerSetup->GetTriggerBitConfiguration().GetJetHighBit());
-			if(adcsum > fTriggerSetup->GetThresholdJetLow()) SETBIT(triggerBits, fTriggerSetup->GetTriggerBitConfiguration().GetJetLowBit());
+			int triggerBits(0);
+			if(adcsum > fTriggerSetup->GetThresholdJetHigh()) triggerBits |= 1 << fTriggerSetup->GetTriggerBitConfiguration().GetJetHighBit();
+			if(adcsum > fTriggerSetup->GetThresholdJetLow()) triggerBits |= 1 << fTriggerSetup->GetTriggerBitConfiguration().GetJetLowBit();
 
 			// Set special bit
 			if(triggerBits){

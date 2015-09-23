@@ -7,13 +7,12 @@
  *  (at your option) any later version. (See cxx source for full Copyright notice)
  */
 
-#include "TNamed.h"
 #include "TriggerBitConfig.h"
 
 /**
  * @class TriggerSetup
  */
-class TriggerSetup: public TNamed {
+class TriggerSetup {
 public:
 	TriggerSetup();
 	TriggerSetup(const TriggerSetup &p);

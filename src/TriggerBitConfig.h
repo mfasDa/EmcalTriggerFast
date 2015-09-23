@@ -19,7 +19,8 @@ public:
 			fMessage("")
 		{
 			std::stringstream msgbuilder;
-			msgbuilder << "Invalid trigger configuration: " << bitname << " bit < 0"
+			msgbuilder << "Invalid trigger configuration: " << bitname << " bit < 0";
+			fMessage = msgbuilder.str();
 		}
 		virtual ~InvalidConfigurationException() throw() {}
 
@@ -32,25 +33,25 @@ public:
 	};
 
 	TriggerBitConfig();
-	TriggerBitConfig(Int_t l0bit, Int_t j1bit, Int_t j2bit, Int_t g1bit, Int_t g2bit, Int_t mcoffset);
+	TriggerBitConfig(int l0bit, int j1bit, int j2bit, int g1bit, int g2bit, int mcoffset);
 	virtual ~TriggerBitConfig() {}
 
 	void Initialise(const TriggerBitConfig &ref);
 
-	Int_t GetLevel0Bit() const { if(fL0Bit < 0) throw InvalidConfigurationException("Level0"); return fL0Bit; }
-	Int_t GetJetHighBit() const { if(fJHighBit < 0) throw InvalidConfigurationException("JetHigh"); return fJHighBit; }
-	Int_t GetJetLowBit() const { if(fJLowBit < 0) throw InvalidConfigurationException("JetLow"); return fJLowBit; }
-	Int_t GetGammaHighBit() const { if(fGHighBit < 0) throw InvalidConfigurationException("GammaHigh"); return fGHighBit; }
-	Int_t GetGammaLowBit() const { if(fGLowBit < 0) throw InvalidConfigurationException("GammaLow"); return fGLowBit; }
-	Int_t GetTriggerTypesEnd() const {if(fTriggerTypesEnd < 0) throw InvalidConfigurationException("MCOffset"); return fTriggerTypesEnd; }
+	int GetLevel0Bit() const { if(fL0Bit < 0) throw InvalidConfigurationException("Level0"); return fL0Bit; }
+	int GetJetHighBit() const { if(fJHighBit < 0) throw InvalidConfigurationException("JetHigh"); return fJHighBit; }
+	int GetJetLowBit() const { if(fJLowBit < 0) throw InvalidConfigurationException("JetLow"); return fJLowBit; }
+	int GetGammaHighBit() const { if(fGHighBit < 0) throw InvalidConfigurationException("GammaHigh"); return fGHighBit; }
+	int GetGammaLowBit() const { if(fGLowBit < 0) throw InvalidConfigurationException("GammaLow"); return fGLowBit; }
+	int GetTriggerTypesEnd() const {if(fTriggerTypesEnd < 0) throw InvalidConfigurationException("MCOffset"); return fTriggerTypesEnd; }
 
 protected:
-	Int_t fL0Bit;      			///< Level0 bit
-	Int_t fJHighBit;   			///< Jet High bit
-	Int_t fJLowBit;    			///< Jet Low bit
-	Int_t fGHighBit;   			///< Gamma High bit
-	Int_t fGLowBit;    			///< Gamma Low bit
-	Int_t fTriggerTypesEnd;   	///< Monte-Carlo offset
+	int fL0Bit;      			///< Level0 bit
+	int fJHighBit;   			///< Jet High bit
+	int fJLowBit;    			///< Jet Low bit
+	int fGHighBit;   			///< Gamma High bit
+	int fGLowBit;    			///< Gamma Low bit
+	int fTriggerTypesEnd;   	///< Monte-Carlo offset
 };
 
 class TriggerBitConfigOld : public TriggerBitConfig{

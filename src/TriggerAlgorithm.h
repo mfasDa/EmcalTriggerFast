@@ -7,6 +7,8 @@
  *  (at your option) any later version. (See cxx source for full Copyright notice)
  */
 
+#include <vector>
+
 class PatchContainer;
 class TriggerChannelMap;
 class TriggerSetup;

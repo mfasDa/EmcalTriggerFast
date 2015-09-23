@@ -11,6 +11,7 @@
 #include "JetTriggerAlgorithm.h"
 #include "TriggerChannelMap.h"
 #include "TriggerMappingEmcalSimple.h"
+#include "TriggerSetup.h"
 
 class TriggerMaker {
 public:

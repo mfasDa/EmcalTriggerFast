@@ -31,7 +31,7 @@ TriggerChannelMap::TriggerChannelMap(int ncols, int nrows):
     fNADCRows(nrows),
     fADC(NULL)
 {
-  fADC = new double[fNADCCols][fNADCRows];
+  fADC = new double[fNADCCols * fNADCRows];
   memset(fADC, 0, sizeof(double) * fNADCCols * fNADCRows);
 }
 
@@ -51,8 +51,7 @@ TriggerChannelMap::~TriggerChannelMap() {
 void TriggerChannelMap::SetADC(int col, int row, double adc) {
   if(row >= fNADCRows || col >= fNADCCols)
 	  throw BoundaryException(row, col, fNADCRows, fNADCCols);
-  }
-  fADC[col][row] = adc;
+  fADC[GetIndexInArray(col, row)] = adc;
 }
 
 /**
@@ -64,8 +63,7 @@ void TriggerChannelMap::SetADC(int col, int row, double adc) {
 void TriggerChannelMap::AddADC(int col, int row, double adc) {
   if(row >= fNADCRows || col >= fNADCCols)
 	  throw BoundaryException(row, col, fNADCRows, fNADCCols);
-  }
-  fADC[col][row] = += adc;
+  fADC[GetIndexInArray(col, row)] += adc;
 }
 
 /**
@@ -84,5 +82,5 @@ void TriggerChannelMap::Reset() {
 double TriggerChannelMap::GetADC(int col, int row) const {
   if(row >= fNADCRows || col >= fNADCCols)
 	  throw BoundaryException(row, col, fNADCRows, fNADCCols);
-  return fADC[col][row];
+  return fADC[GetIndexInArray(col, row)];
 }

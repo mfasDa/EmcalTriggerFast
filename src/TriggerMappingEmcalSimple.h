@@ -38,8 +38,8 @@ public:
 		fDetector = det;
 	}
 
-	int GetRow() const { if(!fDetector == kUndefined) throw TriggerChannelException(); return fRow; }
-	int GetCol() const { if(!fDetector == kUndefined) throw TriggerChannelException(); return fCol; }
+	int GetRow() const { if(fDetector == kUndefined) throw TriggerChannelException(); return fRow; }
+	int GetCol() const { if(fDetector == kUndefined) throw TriggerChannelException(); return fCol; }
 
 	bool IsEMCAL() const { if(fDetector == kEMCAL) return true; return false; }
 	bool IsDCALPHOS() const { if(fDetector == kDCALPHOS) return true; return false; }
@@ -48,12 +48,12 @@ private:
 	Detector		fDetector;
 	int 			fRow;
 	int 			fCol;
-}
+};
 
 class TriggerMappingEmcalSimple {
 public:
 	TriggerMappingEmcalSimple();
-	virtual ~TriggerMappingEmcalSimple() {}
+	virtual ~TriggerMappingEmcalSimple();
 
 	TriggerChannel GetPositionFromEtaPhi(double eta, double phi) const;
 	bool IsEMCAL(double eta, double phi) const;

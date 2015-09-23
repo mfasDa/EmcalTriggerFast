@@ -22,7 +22,6 @@
  * Default constructor
  */
 TriggerSetup::TriggerSetup() :
-  TNamed(),
   fThresholds(),
   fTriggerBitConfig()
 {
@@ -34,7 +33,6 @@ TriggerSetup::TriggerSetup() :
  * \param p Reference for the copy
  */
 TriggerSetup::TriggerSetup(const TriggerSetup &p) :
-  TNamed(p),
   fTriggerBitConfig()
 {
   // Copy constructor.
@@ -64,4 +62,3 @@ void TriggerSetup::Clean(){
   for( int i = 0; i < 4; i++ )
     fThresholds[i] = -1;
 }
-

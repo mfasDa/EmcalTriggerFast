@@ -47,7 +47,7 @@ GammaTriggerAlgorithm::~GammaTriggerAlgorithm() {
 std::vector<RawPatch> GammaTriggerAlgorithm::FindPatches(const TriggerChannelMap *channels) const {
 	std::vector<RawPatch> rawpatches;
 
-	Double_t adcsum(0);
+	double adcsum(0);
 	for(int irow = 0; irow < channels->GetNumberOfRows() - 1; ++irow){
 		for(int icol = 0; icol < channels->GetNumberOfCols() - 1; ++icol){
 			// 2x2 window
@@ -57,9 +57,9 @@ std::vector<RawPatch> GammaTriggerAlgorithm::FindPatches(const TriggerChannelMap
 					adcsum += channels->GetADC(icol + jcol, irow + jrow);
 
 			// make decision, low and high threshold
-			Int_t triggerBits(0);
-			if(adcsum > fTriggerSetup->GetThresholdGammaHigh()) SETBIT(triggerBits, fTriggerSetup->GetTriggerBitConfiguration().GetGammaHighBit());
-			if(adcsum > fTriggerSetup->GetThresholdGammaLow()) SETBIT(triggerBits, fTriggerSetup->GetTriggerBitConfiguration().GetGammaLowBit());
+			int triggerBits(0);
+			if(adcsum > fTriggerSetup->GetThresholdGammaHigh()) triggerBits |= 1 << fTriggerSetup->GetTriggerBitConfiguration().GetGammaHighBit();
+			if(adcsum > fTriggerSetup->GetThresholdGammaLow()) triggerBits |= 1 << fTriggerSetup->GetTriggerBitConfiguration().GetGammaLowBit();
 
 			// Set special bit
 			if(triggerBits){
