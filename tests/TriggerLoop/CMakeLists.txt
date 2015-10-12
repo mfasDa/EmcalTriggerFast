@@ -15,13 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 2.8.11)
+set(EXE_SRCS testETF.cxx)
+string(REPLACE ".cxx" "" EXE_NAME "${EXE_SRCS}")
 
-project(EMCALTriggerFast CXX)
+find_package(Boost REQUIRED random math_c99 system)
+if (BOOST-NOTFOUND)
+	message(SEND_ERROR "Boost or one of the components not found. Will not compile ${EXE_NAME}")
+endif (BOOST-NOTFOUND)
 
-set(CMAKE_MACOSX_RPATH 1)
+include_directories(
+    ${EMCALTriggerFast_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-include(CheckCXXCompilerFlag)
+add_executable(${EXE_NAME} ${EXE_SRCS})
+target_link_libraries(${EXE_NAME} ${LIB_NAME} ${Boost_LIBRARIES} EMCALTriggerFast )
 
-add_subdirectory(src)
-add_subdirectory(tests)
+install(TARGETS ${EXE_NAME} ${LIB_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib)
+
+install(FILES ${HDRS} DESTINATION include)
+
