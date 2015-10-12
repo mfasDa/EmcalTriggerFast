@@ -14,26 +14,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-SET(MODULE EMCALTriggerFast)
 
-set(SRCS
-    TriggerBitConfig.cxx
-    TriggerSetup.cxx
-    TriggerMappingEmcalSimple.cxx
-    TriggerChannelMap.cxx
-    TriggerAlgorithm.cxx
-    JetTriggerAlgorithm.cxx
-    GammaTriggerAlgorithm.cxx
-    TriggerMaker.cxx
+include_directories(
+    ${ROOT_INCLUDE_DIR}
+    ${EMCALTriggerFast_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+link_directories(
+    ${ROOT_LIBDIR}
 )
 
-# Headers from sources
-string(REPLACE ".cxx" ".h" HDRS "${SRCS}")
+SET(LIBDEPS EMCALTriggerFast Core EG Geom Gpad Graf Hist MathCore Matrix Physics RIO Tree VMC)
 
-add_library(EMCALTriggerFast SHARED ${SRCS} ${HDRS})
+add_executable(channelmaptester channelmaptester.cxx)
+target_link_libraries(channelmaptester ${LIBDEPS})
 
-install(TARGETS EMCALTriggerFast
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib)
-install(FILES ${HDRS} DESTINATION include)
+install(TARGETS channelmaptester RUNTIME DESTINATION bin)

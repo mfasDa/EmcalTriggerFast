@@ -136,8 +136,8 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(double eta,
 	} else {
 		int rowsec = emcsec->GetRowNumberInSector(phi);
 		row = 0;
-		for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsEMCAL.begin(); secit != fPhiLimitsEMCAL.end(); ++secit){
-			if(secit->GetSectorID() < emcsec->GetSectorID()) row += secit->GetNumberOfRows();
+		for(int isec = 0; isec < 6; isec++){
+			if(isec < emcsec->GetSectorID()) row += fPhiLimitsEMCAL[isec].GetNumberOfRows();
 			else break;
 		}
 		row += rowsec;
@@ -150,6 +150,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(double eta,
 			col = colcount;
 			break;
 		}
+		colcount++;
 	}
 
 	result.Set(row, col, TriggerChannel::kEMCAL);
@@ -176,8 +177,8 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(double e
 	} else {
 		int rowsec = emcsec->GetRowNumberInSector(phi);
 		row = 0;
-		for(std::vector<SectorPhi>::const_iterator secit = fPhiLimitsDCALPHOS.begin(); secit != fPhiLimitsDCALPHOS.end(); ++secit){
-			if(secit->GetSectorID() < emcsec->GetSectorID()) row += secit->GetNumberOfRows();
+		for(int isec = 0; isec < 4; isec++){
+			if(isec < emcsec->GetSectorID()) row += fPhiLimitsDCALPHOS[isec].GetNumberOfRows();
 			else break;
 		}
 		row += rowsec;
@@ -190,6 +191,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(double e
 			col = colcount;
 			break;
 		}
+		colcount++;
 	}
 
 	result.Set(row, col, TriggerChannel::kDCALPHOS);
@@ -260,7 +262,7 @@ TriggerMappingEmcalSimple::SectorPhi::SectorPhi(int sectorID, double phiMin, dou
  */
 int TriggerMappingEmcalSimple::SectorPhi::GetRowNumberInSector(double phi) const {
 	int rownumber = -1;
-	double phiwidth = (fMaximum - fMinimum) / 12.;
+	double phiwidth = (fMaximum - fMinimum) / fNRows;
 	int rowcounter = 0;
 	for(double phiiter = fMinimum; phiiter < fMaximum; phiiter += phiwidth){
 		if(phi > phiiter && phi < phiiter + phiwidth){

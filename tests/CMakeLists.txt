@@ -14,26 +14,5 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-SET(MODULE EMCALTriggerFast)
 
-set(SRCS
-    TriggerBitConfig.cxx
-    TriggerSetup.cxx
-    TriggerMappingEmcalSimple.cxx
-    TriggerChannelMap.cxx
-    TriggerAlgorithm.cxx
-    JetTriggerAlgorithm.cxx
-    GammaTriggerAlgorithm.cxx
-    TriggerMaker.cxx
-)
-
-# Headers from sources
-string(REPLACE ".cxx" ".h" HDRS "${SRCS}")
-
-add_library(EMCALTriggerFast SHARED ${SRCS} ${HDRS})
-
-install(TARGETS EMCALTriggerFast
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib)
-install(FILES ${HDRS} DESTINATION include)
+add_subdirectory(ChannelMapTester)

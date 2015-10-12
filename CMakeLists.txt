@@ -14,26 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-SET(MODULE EMCALTriggerFast)
 
-set(SRCS
-    TriggerBitConfig.cxx
-    TriggerSetup.cxx
-    TriggerMappingEmcalSimple.cxx
-    TriggerChannelMap.cxx
-    TriggerAlgorithm.cxx
-    JetTriggerAlgorithm.cxx
-    GammaTriggerAlgorithm.cxx
-    TriggerMaker.cxx
-)
+project(EMCALTriggerFast CXX)
+cmake_minimum_required(VERSION 2.8.11)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+include(CheckCXXCompilerFlag)
 
-# Headers from sources
-string(REPLACE ".cxx" ".h" HDRS "${SRCS}")
+# ROOT NEEDED for tests
+find_package(ROOT 5.34.30 REQUIRED)
 
-add_library(EMCALTriggerFast SHARED ${SRCS} ${HDRS})
-
-install(TARGETS EMCALTriggerFast
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib)
-install(FILES ${HDRS} DESTINATION include)
+add_subdirectory(src)
+add_subdirectory(tests)
