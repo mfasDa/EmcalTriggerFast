@@ -153,7 +153,7 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(double eta,
 	}
 
 	if(col >= 0)
-		result.Set(row, col, TriggerChannel::kDCALPHOS);
+		result.Set(row, col, TriggerChannel::kEMCAL);
 	return result;
 }
 
