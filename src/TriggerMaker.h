@@ -18,8 +18,14 @@ public:
 	TriggerMaker();
 	virtual ~TriggerMaker();
 
-	void Reset();
-	std::vector<RawPatch>			FindPatches() const;
+	void 							Reset();
+	void 							FindPatches();
+	std::vector<RawPatch>			GetPatches();
+	RawPatch 						GetMaxGammaEMCAL();
+	RawPatch 						GetMaxGammaDCALPHOS();
+	RawPatch 						GetMaxJetEMCAL();
+	RawPatch 						GetMaxJetDCALPHOS();
+
 	void FillChannelMap(double eta, double phi, double energy);
 
 	/**
@@ -53,6 +59,11 @@ private:
 	TriggerChannelMap				fTriggerChannelsDCALPHOS;			///< Trigger channels for the combination DCAL-PHOS
 	TriggerMappingEmcalSimple		fTriggerMapping;					///< Mapping between trigger channels and eta and phi
 	TriggerSetup					fTriggerSetup;						///< Setup of the EMCAL / DCAL-PHOS trigger algorithms
+	bool							fHasRun;
+	std::vector<RawPatch>			fGammaEMCAL;
+	std::vector<RawPatch>			fGammaDCALPHOS;
+	std::vector<RawPatch>			fJetEMCAL;
+	std::vector<RawPatch>			fJetDCALPHOS;
 };
 
 #endif /* SRC_TRIGGERMAKER_H_ */
