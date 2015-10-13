@@ -43,8 +43,9 @@ TriggerMappingEmcalSimple::TriggerMappingEmcalSimple():
 	fPhiLimitsDCALPHOS(),
 	fEtaMin(-0.668305),
 	fEtaMax(0.668305),
-	fEtaSizeFOR(0.027846)
+	fEtaSizeFOR()
 {
+	fEtaSizeFOR = (fEtaMax - fEtaMin) / 48;
 	fPhiLimitsEMCAL.push_back(SectorPhi(0, 1.40413, 1.73746, 12));
 	fPhiLimitsEMCAL.push_back(SectorPhi(1, 1.7532, 2.08653, 12));
 	fPhiLimitsEMCAL.push_back(SectorPhi(2, 2.10226, 2.43559, 12));
@@ -144,16 +145,15 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiEMCAL(double eta,
 	}
 	// then get the column
 	// assume linear model, mapping from positive to negative eta as obtained from fastor + cell mapping from AliEMCALGeometry
-	int colcount = 0;
-	for(double etaiter = fEtaMax; etaiter > fEtaMin; etaiter -= fEtaSizeFOR){
-		if(eta > etaiter - fEtaSizeFOR && eta < etaiter){
-			col = colcount;
+	for(int coliter = 0; coliter < 48; coliter++){
+		if(eta > fEtaMax - (coliter+1) * fEtaSizeFOR && eta < fEtaMax - coliter * fEtaSizeFOR){
+			col = coliter;
 			break;
 		}
-		colcount++;
 	}
 
-	result.Set(row, col, TriggerChannel::kEMCAL);
+	if(col >= 0)
+		result.Set(row, col, TriggerChannel::kDCALPHOS);
 	return result;
 }
 
@@ -185,16 +185,15 @@ TriggerChannel TriggerMappingEmcalSimple::GetPositionFromEtaPhiDCALPHOS(double e
 	}
 	// then get the column
 	// assume linear model, mapping from positive to negative eta as obtained from fastor + cell mapping from AliEMCALGeometry
-	int colcount = 0;
-	for(double etaiter = fEtaMax; etaiter > fEtaMin; etaiter -= fEtaSizeFOR){
-		if(eta > etaiter - fEtaSizeFOR && eta < etaiter){
-			col = colcount;
+	for(int coliter = 0; coliter < 48; coliter++){
+		if(eta > fEtaMax - (coliter+1) * fEtaSizeFOR && eta < fEtaMax - coliter * fEtaSizeFOR){
+			col = coliter;
 			break;
 		}
-		colcount++;
 	}
 
-	result.Set(row, col, TriggerChannel::kDCALPHOS);
+	if(col >= 0)
+		result.Set(row, col, TriggerChannel::kDCALPHOS);
 	return result;
 }
 
