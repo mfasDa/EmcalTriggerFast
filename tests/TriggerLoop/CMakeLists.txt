@@ -28,15 +28,15 @@ endif (BOOST-NOTFOUND)
 include_directories(
     ${Boost_INCLUDE_DIR}
     ${EMCALTriggerFast_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_executable(${EXE_NAME} ${EXE_SRCS})
-target_link_libraries(${EXE_NAME} ${LIB_NAME} ${Boost_LIBRARIES} EMCALTriggerFast )
+target_link_libraries(${EXE_NAME} ${Boost_LIBRARIES} EMCALTriggerFast )
 
-install(TARGETS ${EXE_NAME} ${LIB_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib)
+install(TARGETS ${EXE_NAME}
+        RUNTIME DESTINATION bin )
 
 install(FILES ${HDRS} DESTINATION include)
 
