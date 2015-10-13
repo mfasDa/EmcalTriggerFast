@@ -27,6 +27,7 @@ endif (BOOST-NOTFOUND)
 
 include_directories(
     ${EMCALTriggerFast_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
