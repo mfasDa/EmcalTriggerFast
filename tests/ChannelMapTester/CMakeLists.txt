@@ -15,18 +15,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include_directories(
-    ${ROOT_INCLUDE_DIR}
-    ${EMCALTriggerFast_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-link_directories(
-    ${ROOT_LIBDIR}
-)
+cmake_minimum_required(VERSION 2.8.11)
 
-SET(LIBDEPS EMCALTriggerFast Core EG Geom Gpad Graf Hist MathCore Matrix Physics RIO Tree VMC)
+execute_process ( COMMAND root-config --etcdir WORKING_DIRECTORY /tmp OUTPUT_VARIABLE ROOT_ETCDIR OUTPUT_STRIP_TRAILING_WHITESPACE )
+set( CMAKE_MODULE_PATH "${ROOT_ETCDIR}/cmake" )
+find_package(ROOT) # REQUIRED)
 
-add_executable(channelmaptester channelmaptester.cxx)
-target_link_libraries(channelmaptester ${LIBDEPS})
+if (ROOT_FOUND)
+	message (STATUS "ROOT found via root-config --etcdir and etc/FindROOT.cmake : CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+endif (ROOT_FOUND)
 
-install(TARGETS channelmaptester RUNTIME DESTINATION bin)
+if (ROOT-NOTFOUND)
+	message (STATUS "ROOT not found - checking with the provided FindROOT.cmake")
+	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+	message (STATUS "+ROOT CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+	find_package(ROOT REQUIRED)
+endif(ROOT-NOTFOUND)
+
+if (ROOT_FOUND)
+	include_directories(
+	    ${ROOT_INCLUDE_DIR}
+	    ${EMCALTriggerFast_SOURCE_DIR}/src
+	    ${CMAKE_CURRENT_SOURCE_DIR}
+	)
+	add_executable(channelmaptester channelmaptester.cxx)
+	target_link_libraries(channelmaptester ${ROOT_LIBRARIES} EMCALTriggerFast )
+	install(TARGETS channelmaptester RUNTIME DESTINATION bin)
+else()
+	message(WARNING "no ROOT -> channelmaptester will not be compiled")
+endif (ROOT_FOUND)

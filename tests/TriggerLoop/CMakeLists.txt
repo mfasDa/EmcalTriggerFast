@@ -17,11 +17,25 @@
 
 cmake_minimum_required(VERSION 2.8.11)
 
-project(EMCALTriggerFast CXX)
+set(EXE_SRCS testETF.cxx)
+string(REPLACE ".cxx" "" EXE_NAME "${EXE_SRCS}")
 
-set(CMAKE_MACOSX_RPATH 1)
+find_package(Boost REQUIRED random math_c99 system)
+if (BOOST-NOTFOUND)
+	message(SEND_ERROR "Boost or one of the components not found. Will not compile ${EXE_NAME}")
+endif (BOOST-NOTFOUND)
 
-include(CheckCXXCompilerFlag)
+include_directories(
+    ${EMCALTriggerFast_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-add_subdirectory(src)
-add_subdirectory(tests)
+add_executable(${EXE_NAME} ${EXE_SRCS})
+target_link_libraries(${EXE_NAME} ${LIB_NAME} ${Boost_LIBRARIES} EMCALTriggerFast )
+
+install(TARGETS ${EXE_NAME} ${LIB_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib)
+
+install(FILES ${HDRS} DESTINATION include)
+
