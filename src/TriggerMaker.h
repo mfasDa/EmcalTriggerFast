@@ -26,6 +26,13 @@ public:
 	RawPatch 						GetMaxJetEMCAL();
 	RawPatch 						GetMaxJetDCALPHOS();
 
+	double 							GetMedian(std::vector<RawPatch> v);
+
+	double 							GetMedianGammaEMCAL();
+	double 							GetMedianGammaDCALPHOS();
+	double 							GetMedianJetEMCAL();
+	double 							GetMedianJetDCALPHOS();
+
 	void FillChannelMap(double eta, double phi, double energy);
 
 	/**

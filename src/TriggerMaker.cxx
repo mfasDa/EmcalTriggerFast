@@ -150,6 +150,49 @@ RawPatch TriggerMaker::GetMaxJetDCALPHOS()
 		return fJetDCALPHOS.back();
 }
 
+double TriggerMaker::GetMedian(std::vector<RawPatch> v)
+{
+	if (fHasRun == false)
+		FindPatches();
+
+	double median = 0;
+	size_t size = v.size();
+
+	if (size > 0)
+	{
+		size_t halfsize = v.size() / 2;
+		if (size % 2 == 0)
+		{
+			median = (v[halfsize - 1].GetADC() + v[halfsize].GetADC()) / 2;
+		}
+		else
+		{
+			median = v[halfsize].GetADC();
+		}
+	}
+	return median;
+}
+
+double TriggerMaker::GetMedianGammaEMCAL()
+{
+	return GetMedian(fGammaEMCAL);
+}
+
+double TriggerMaker::GetMedianGammaDCALPHOS()
+{
+	return GetMedian(fGammaDCALPHOS);
+}
+
+double TriggerMaker::GetMedianJetEMCAL()
+{
+	return GetMedian(fJetEMCAL);
+}
+
+double TriggerMaker::GetMedianJetDCALPHOS()
+{
+	return GetMedian(fJetDCALPHOS);
+}
+
 /**
  * Fill trigger channel map depending on where the particle hits the detector in the EMCAL DCAL-PHOS surface. Adds the charge
  * to the already existing charge. Doesn't do anything if the particle is outside of the detector acceptance of either of the
