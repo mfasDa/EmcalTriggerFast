@@ -34,48 +34,48 @@ int main()
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 	std::cout.precision(2);
 
-	int nevents = 10;
+	int nevents = 10000;
 	for (unsigned int iev = 0; iev < nevents; iev++)
 	{
 		tm.Reset();
-		int nparticles = uni() * 100;
+		int nparticles = uni() * 1000 + 1000;
 		std::cout << "[i] Evevt: " << iev << " N particles: " << nparticles << std::endl;
 		for (unsigned int ip = 0; ip < nparticles; ip++)
 		{
 			double phi_v = uni() * pi * 2.;
 			double eta_v = uni() * 2. - 1.;
 			double ene_v = uni() * 100.;
-			std::cout << "[i] phi,eta,ene: "
-			          << phi_v << " \t"
-			          << eta_v << " \t"
-			          << ene_v
-			          << std::endl;
+			//std::cout << "[i] phi,eta,ene: "
+			//          << phi_v << " \t"
+			//          << eta_v << " \t"
+			//          << ene_v
+			//          << std::endl;
 			tm.FillChannelMap(eta_v, phi_v, ene_v);
 		}
 		const TriggerChannelMap &emc = tm.GetEMCALChannels();
 		int ncols = emc.GetNumberOfCols();
 		int nrows = emc.GetNumberOfRows();
 		int nadc  = 0;
-		for (int ic = 0; ic < ncols; ic++)
-		{
-			for (int ir = 0; ir < nrows; ir++)
-			{
-				double adc = emc.GetADC(ic, ir);
-				std::cout << nadc++ << " " << ic << " " << ir << " " << adc << std::endl;
-			}
-		}
-		std::vector<RawPatch> patches = tm.GetPatches();
-		for (std::vector<int>::size_type ip = 0; ip != patches.size(); ip++)
-		{
-			RawPatch &p = patches[ip];
-			std::cout << "- patch: " << ip
-			          << " adc = " << p.GetADC()
-			          << " EMCal/DCal = " << p.IsEMCAL() << "/" << p.IsDCALPHOS()
-			          << std::endl;
-		}
-		std::cout << "gam emcal max: " << tm.GetMaxGammaEMCAL().GetADC() << std::endl;
-		std::cout << "gam  dcal max: " << tm.GetMaxGammaDCALPHOS().GetADC() << std::endl;
-		std::cout << "jet emcal max: " << tm.GetMaxJetEMCAL().GetADC() << std::endl;
-		std::cout << "jet  dcal max: " << tm.GetMaxJetDCALPHOS().GetADC() << std::endl;
+		//for (int ic = 0; ic < ncols; ic++)
+		//{
+		//	for (int ir = 0; ir < nrows; ir++)
+		//	{
+		//		double adc = emc.GetADC(ic, ir);
+		//		std::cout << nadc++ << " " << ic << " " << ir << " " << adc << std::endl;
+		//	}
+		//}
+		//std::vector<RawPatch> patches = tm.GetPatches();
+		//for (std::vector<int>::size_type ip = 0; ip != patches.size(); ip++)
+		//{
+		//	RawPatch &p = patches[ip];
+		//	std::cout << "- patch: " << ip
+		//	          << " adc = " << p.GetADC()
+		//	          << " EMCal/DCal = " << p.IsEMCAL() << "/" << p.IsDCALPHOS()
+		//	          << std::endl;
+		//}
+		std::cout << "    gam emcal max: " << tm.GetMaxGammaEMCAL().GetADC() << std::endl;
+		std::cout << "    gam  dcal max: " << tm.GetMaxGammaDCALPHOS().GetADC() << std::endl;
+		std::cout << "    jet emcal max: " << tm.GetMaxJetEMCAL().GetADC() << std::endl;
+		std::cout << "    jet  dcal max: " << tm.GetMaxJetDCALPHOS().GetADC() << std::endl;
 	} // event loop
 };
