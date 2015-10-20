@@ -152,9 +152,6 @@ RawPatch TriggerMaker::GetMaxJetDCALPHOS()
 
 double TriggerMaker::GetMedian(std::vector<RawPatch> v)
 {
-	if (fHasRun == false)
-		FindPatches();
-
 	double median = 0;
 	size_t size = v.size();
 
@@ -175,21 +172,29 @@ double TriggerMaker::GetMedian(std::vector<RawPatch> v)
 
 double TriggerMaker::GetMedianGammaEMCAL()
 {
+	if (fHasRun == false)
+		FindPatches();
 	return GetMedian(fGammaEMCAL);
 }
 
 double TriggerMaker::GetMedianGammaDCALPHOS()
 {
+	if (fHasRun == false)
+		FindPatches();
 	return GetMedian(fGammaDCALPHOS);
 }
 
 double TriggerMaker::GetMedianJetEMCAL()
 {
+	if (fHasRun == false)
+		FindPatches();
 	return GetMedian(fJetEMCAL);
 }
 
 double TriggerMaker::GetMedianJetDCALPHOS()
 {
+	if (fHasRun == false)
+		FindPatches();
 	return GetMedian(fJetDCALPHOS);
 }
 
