@@ -27,6 +27,8 @@ TriggerMaker::TriggerMaker() :
 	fTriggerChannelsEMCAL(48, 64),
 	fTriggerChannelsDCALPHOS(48, 40),
 	fTriggerMapping(),
+	fBadChannelsEMCAL(),
+	fBadChannelsDCALPHOS(),
 	fHasRun(false),
 	fGammaEMCAL(),
 	fGammaDCALPHOS(),
@@ -209,8 +211,10 @@ double TriggerMaker::GetMedianJetDCALPHOS()
 void TriggerMaker::FillChannelMap(double eta, double phi, double energy) {
 	TriggerChannel position = fTriggerMapping.GetPositionFromEtaPhi(eta, phi);
 	if (position.IsEMCAL()) {
-		fTriggerChannelsEMCAL.AddADC(position.GetCol(), position.GetRow(), energy);
+		if(!fBadChannelsEMCAL.HasChannel(position.GetCol(), position.GetRow()))
+			fTriggerChannelsEMCAL.AddADC(position.GetCol(), position.GetRow(), energy);
 	} else if (position.IsDCALPHOS()) {
+		if(!fBadChannelsDCALPHOS.HasChannel(position.GetCol(), position.GetRow()))
 		fTriggerChannelsDCALPHOS.AddADC(position.GetCol(), position.GetRow(), energy);
 	}
 }

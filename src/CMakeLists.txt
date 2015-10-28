@@ -26,6 +26,7 @@ set(SRCS
     TriggerSetup.cxx
     TriggerMappingEmcalSimple.cxx
     TriggerChannelMap.cxx
+    TriggerBadChannelContainer.cxx
     TriggerAlgorithm.cxx
     JetTriggerAlgorithm.cxx
     GammaTriggerAlgorithm.cxx

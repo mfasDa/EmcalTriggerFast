@@ -10,6 +10,7 @@
 #include "GammaTriggerAlgorithm.h"
 #include "JetTriggerAlgorithm.h"
 #include "TriggerChannelMap.h"
+#include "TriggerBadChannelContainer.h"
 #include "TriggerMappingEmcalSimple.h"
 #include "TriggerSetup.h"
 
@@ -59,6 +60,22 @@ public:
 	 */
 	void SetTriggerSetup(TriggerSetup &setup) { fTriggerSetup = setup; }
 
+	/**
+	 * Add bad channel position in EMCAL in row and col to the list of bad channels.
+	 * Bad channels will be ignored when setting the energy
+	 * @param col Column of the bad channel
+	 * @param row Row of the bad channel
+	 */
+	void AddBadChannelEMCAL(int col, int row) { fBadChannelsEMCAL.AddChannel(col, row); }
+
+	/**
+	 * Add bad channel position in EMCAL in row and col to the list of bad channels.
+	 * Bad channels will be ignored when setting the energy
+	 * @param col Column of the bad channel
+	 * @param row Row of the bad channel
+	 */
+	void AddBadChannelDCALPHOS(int col, int row) { fBadChannelsDCALPHOS.AddChannel(col, row); }
+
 private:
 	JetTriggerAlgorithm				fJetTrigger;						///< Algorithm finding jet patches on a trigger channel map
 	GammaTriggerAlgorithm			fGammaTrigger;						///< Algorithm finding gamma patches on a trigger channel map
@@ -66,6 +83,8 @@ private:
 	TriggerChannelMap				fTriggerChannelsDCALPHOS;			///< Trigger channels for the combination DCAL-PHOS
 	TriggerMappingEmcalSimple		fTriggerMapping;					///< Mapping between trigger channels and eta and phi
 	TriggerSetup					fTriggerSetup;						///< Setup of the EMCAL / DCAL-PHOS trigger algorithms
+	TriggerBadChannelContainer		fBadChannelsEMCAL;					///< Map with bad EMCAL channels
+	TriggerBadChannelContainer		fBadChannelsDCALPHOS;				///< Map with bad DCAL-PHOS channels
 	bool							fHasRun;
 	std::vector<RawPatch>			fGammaEMCAL;
 	std::vector<RawPatch>			fGammaDCALPHOS;
