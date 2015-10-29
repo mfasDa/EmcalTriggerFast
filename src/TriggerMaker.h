@@ -21,7 +21,7 @@ public:
 
 	void 							Reset();
 	void 							FindPatches();
-	std::vector<RawPatch>			GetPatches();
+	std::vector<RawPatch>			GetPatches(const int what = RawPatch::kAny);
 	RawPatch 						GetMaxGammaEMCAL();
 	RawPatch 						GetMaxGammaDCALPHOS();
 	RawPatch 						GetMaxJetEMCAL();

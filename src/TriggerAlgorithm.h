@@ -26,8 +26,13 @@ class RawPatch{
 	 */
 public:
 	enum Patchtype {
+		kAny,
 		kEMCALpatch,
 		kDCALPHOSpatch,
+		kEMCALpatchGA,
+		kEMCALpatchJE,		
+		kDCALpatchGA,		
+		kDCALpatchJE,				
 		kUndefPatch
 	};
 	RawPatch():
