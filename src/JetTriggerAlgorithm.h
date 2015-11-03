@@ -17,6 +17,8 @@ public:
 	virtual ~JetTriggerAlgorithm();
 
 	std::vector<RawPatch> FindPatches(const TriggerChannelMap * channels) const;
+	std::vector<RawPatch> FindPatches8x8(const TriggerChannelMap *channels) const;
+
 };
 
 #endif /* JetTriggerAlgorithm_H */

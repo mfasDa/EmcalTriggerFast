@@ -26,6 +26,8 @@ public:
 	RawPatch 						GetMaxGammaDCALPHOS();
 	RawPatch 						GetMaxJetEMCAL();
 	RawPatch 						GetMaxJetDCALPHOS();
+	RawPatch 						GetMaxJetEMCAL8x8();
+	RawPatch 						GetMaxJetDCALPHOS8x8();
 
 	double 							GetMedian(std::vector<RawPatch> v);
 
@@ -33,6 +35,8 @@ public:
 	double 							GetMedianGammaDCALPHOS();
 	double 							GetMedianJetEMCAL();
 	double 							GetMedianJetDCALPHOS();
+	double 							GetMedianJetEMCAL8x8();
+	double 							GetMedianJetDCALPHOS8x8();
 
 	void FillChannelMap(double eta, double phi, double energy);
 
@@ -90,6 +94,8 @@ private:
 	std::vector<RawPatch>			fGammaDCALPHOS;
 	std::vector<RawPatch>			fJetEMCAL;
 	std::vector<RawPatch>			fJetDCALPHOS;
+	std::vector<RawPatch>			fJetEMCAL8x8;
+	std::vector<RawPatch>			fJetDCALPHOS8x8;
 };
 
 #endif /* SRC_TRIGGERMAKER_H_ */

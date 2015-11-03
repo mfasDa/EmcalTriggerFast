@@ -31,8 +31,10 @@ public:
 		kDCALPHOSpatch,
 		kEMCALpatchGA,
 		kEMCALpatchJE,		
+		kEMCALpatchJE8x8,		
 		kDCALpatchGA,		
 		kDCALpatchJE,				
+		kDCALpatchJE8x8,				
 		kUndefPatch
 	};
 	RawPatch():
