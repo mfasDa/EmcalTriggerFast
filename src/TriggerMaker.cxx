@@ -33,7 +33,9 @@ TriggerMaker::TriggerMaker() :
 	fGammaEMCAL(),
 	fGammaDCALPHOS(),
 	fJetEMCAL(),
-	fJetDCALPHOS()
+	fJetDCALPHOS(),
+	fJetEMCAL8x8(),
+	fJetDCALPHOS8x8()
 {
 	fJetTrigger.SetTriggerSetup(&fTriggerSetup);
 	fGammaTrigger.SetTriggerSetup(&fTriggerSetup);
@@ -55,6 +57,8 @@ void TriggerMaker::Reset() {
 	fGammaDCALPHOS.clear();
 	fJetEMCAL.clear();
 	fJetDCALPHOS.clear();
+	fJetEMCAL8x8.clear();
+	fJetDCALPHOS8x8.clear();
 	fHasRun = false;
 }
 
@@ -71,42 +75,62 @@ void TriggerMaker::Reset() {
 
 void TriggerMaker::FindPatches() {
 
-	fGammaEMCAL    = fGammaTrigger.FindPatches(&fTriggerChannelsEMCAL);
-	fGammaDCALPHOS = fGammaTrigger.FindPatches(&fTriggerChannelsDCALPHOS);
-	fJetEMCAL      = fJetTrigger.FindPatches(&fTriggerChannelsEMCAL);
-	fJetDCALPHOS   = fJetTrigger.FindPatches(&fTriggerChannelsDCALPHOS);
+	fGammaEMCAL     = fGammaTrigger.FindPatches 	(	&fTriggerChannelsEMCAL		);
+	fGammaDCALPHOS  = fGammaTrigger.FindPatches 	(	&fTriggerChannelsDCALPHOS	);
+	fJetEMCAL       = fJetTrigger.  FindPatches 	(	&fTriggerChannelsEMCAL		);
+	fJetDCALPHOS    = fJetTrigger.  FindPatches 	(	&fTriggerChannelsDCALPHOS	);
+	fJetEMCAL8x8    = fJetTrigger.  FindPatches8x8	(	&fTriggerChannelsEMCAL		);
+	fJetDCALPHOS8x8 = fJetTrigger.  FindPatches8x8	(	&fTriggerChannelsDCALPHOS	);
 
 	fHasRun = true;
 }
 
-std::vector<RawPatch> TriggerMaker::GetPatches() {
+std::vector<RawPatch> TriggerMaker::GetPatches(const int what) {
 	if (fHasRun == false)
 		FindPatches();
 
 	std::vector<RawPatch> result;
 
-	// First run gamma triggers on EMCAL and DCAL-PHOS channels ...
-	fGammaEMCAL = fGammaTrigger.FindPatches(&fTriggerChannelsEMCAL);
-	for (std::vector<RawPatch>::iterator patchiter = fGammaEMCAL.begin(); patchiter != fGammaEMCAL.end(); patchiter++) {
-		patchiter->SetPatchType(RawPatch::kEMCALpatch);
-		result.push_back(*patchiter);
-	}
-	fGammaDCALPHOS = fGammaTrigger.FindPatches(&fTriggerChannelsDCALPHOS);
-	for (std::vector<RawPatch>::iterator patchiter = fGammaDCALPHOS.begin(); patchiter != fGammaDCALPHOS.end(); patchiter++) {
-		patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
-		result.push_back(*patchiter);
+	if (what == RawPatch::kAny || what == RawPatch::kEMCALpatchGA ) {
+		for (std::vector<RawPatch>::iterator patchiter = fGammaEMCAL.begin(); patchiter != fGammaEMCAL.end(); patchiter++) {
+			patchiter->SetPatchType(RawPatch::kEMCALpatch);
+			result.push_back(*patchiter);
+		}
 	}
 
-	// ... then run triggers on EMCAL and DCAL-PHOS channels
-	fJetEMCAL = fJetTrigger.FindPatches(&fTriggerChannelsEMCAL);
-	for (std::vector<RawPatch>::iterator patchiter = fJetEMCAL.begin(); patchiter != fJetEMCAL.end(); patchiter++) {
-		patchiter->SetPatchType(RawPatch::kEMCALpatch);
-		result.push_back(*patchiter);
+	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchGA ) {
+		for (std::vector<RawPatch>::iterator patchiter = fGammaDCALPHOS.begin(); patchiter != fGammaDCALPHOS.end(); patchiter++) {
+			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
+			result.push_back(*patchiter);
+		}
 	}
-	fJetDCALPHOS = fJetTrigger.FindPatches(&fTriggerChannelsDCALPHOS);
-	for (std::vector<RawPatch>::iterator patchiter = fJetDCALPHOS.begin(); patchiter != fJetDCALPHOS.end(); patchiter++) {
-		patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
-		result.push_back(*patchiter);
+
+	if (what == RawPatch::kAny || what == RawPatch::kEMCALpatchJE ) {
+		for (std::vector<RawPatch>::iterator patchiter = fJetEMCAL.begin(); patchiter != fJetEMCAL.end(); patchiter++) {
+			patchiter->SetPatchType(RawPatch::kEMCALpatch);
+			result.push_back(*patchiter);
+		}
+	}
+
+	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchJE ) {
+		for (std::vector<RawPatch>::iterator patchiter = fJetDCALPHOS.begin(); patchiter != fJetDCALPHOS.end(); patchiter++) {
+			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
+			result.push_back(*patchiter);
+		}
+	}
+
+	if (what == RawPatch::kAny || what == RawPatch::kEMCALpatchJE8x8 ) {
+		for (std::vector<RawPatch>::iterator patchiter = fJetEMCAL8x8.begin(); patchiter != fJetEMCAL8x8.end(); patchiter++) {
+			patchiter->SetPatchType(RawPatch::kEMCALpatch);
+			result.push_back(*patchiter);
+		}
+	}
+
+	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchJE8x8 ) {
+		for (std::vector<RawPatch>::iterator patchiter = fJetDCALPHOS8x8.begin(); patchiter != fJetDCALPHOS8x8.end(); patchiter++) {
+			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
+			result.push_back(*patchiter);
+		}
 	}
 
 	return result;
@@ -150,6 +174,26 @@ RawPatch TriggerMaker::GetMaxJetDCALPHOS()
 		return RawPatch();
 	else
 		return fJetDCALPHOS.back();
+}
+
+RawPatch TriggerMaker::GetMaxJetEMCAL8x8()
+{
+	if (fHasRun == false)
+		FindPatches();
+	if (fJetEMCAL8x8.empty())
+		return RawPatch();
+	else
+		return fJetEMCAL8x8.back();
+}
+
+RawPatch TriggerMaker::GetMaxJetDCALPHOS8x8()
+{
+	if (fHasRun == false)
+		FindPatches();
+	if (fJetDCALPHOS8x8.empty())
+		return RawPatch();
+	else
+		return fJetDCALPHOS8x8.back();
 }
 
 double TriggerMaker::GetMedian(std::vector<RawPatch> v)
@@ -200,6 +244,20 @@ double TriggerMaker::GetMedianJetDCALPHOS()
 	return GetMedian(fJetDCALPHOS);
 }
 
+double TriggerMaker::GetMedianJetEMCAL8x8()
+{
+	if (fHasRun == false)
+		FindPatches();
+	return GetMedian(fJetEMCAL8x8);
+}
+
+double TriggerMaker::GetMedianJetDCALPHOS8x8()
+{
+	if (fHasRun == false)
+		FindPatches();
+	return GetMedian(fJetDCALPHOS8x8);
+}
+
 /**
  * Fill trigger channel map depending on where the particle hits the detector in the EMCAL DCAL-PHOS surface. Adds the charge
  * to the already existing charge. Doesn't do anything if the particle is outside of the detector acceptance of either of the
@@ -211,10 +269,10 @@ double TriggerMaker::GetMedianJetDCALPHOS()
 void TriggerMaker::FillChannelMap(double eta, double phi, double energy) {
 	TriggerChannel position = fTriggerMapping.GetPositionFromEtaPhi(eta, phi);
 	if (position.IsEMCAL()) {
-		if(!fBadChannelsEMCAL.HasChannel(position.GetCol(), position.GetRow()))
+		if (!fBadChannelsEMCAL.HasChannel(position.GetCol(), position.GetRow()))
 			fTriggerChannelsEMCAL.AddADC(position.GetCol(), position.GetRow(), energy);
 	} else if (position.IsDCALPHOS()) {
-		if(!fBadChannelsDCALPHOS.HasChannel(position.GetCol(), position.GetRow()))
-		fTriggerChannelsDCALPHOS.AddADC(position.GetCol(), position.GetRow(), energy);
+		if (!fBadChannelsDCALPHOS.HasChannel(position.GetCol(), position.GetRow()))
+			fTriggerChannelsDCALPHOS.AddADC(position.GetCol(), position.GetRow(), energy);
 	}
 }

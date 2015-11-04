@@ -72,3 +72,32 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *
 	std::sort(rawpatches.begin(), rawpatches.end());
 	return rawpatches;
 }
+
+std::vector<RawPatch> JetTriggerAlgorithm::FindPatches8x8(const TriggerChannelMap *channels) const {
+	std::vector<RawPatch> rawpatches;
+
+	double adcsum(0);
+	for(int irow = 0; irow < channels->GetNumberOfRows() - 8-1; ++irow){
+		for(int icol = 0; icol < channels->GetNumberOfCols() - 8-1; ++icol){
+			// 8x8 window
+			adcsum = 0;
+			for(int jrow = 0; jrow < 8; jrow++)
+				for(int jcol = 0; jcol < 8; jcol++)
+					adcsum += channels->GetADC(icol + jcol, irow + jrow);
+
+			// make decision, low and high threshold
+			int triggerBits(0);
+			if(adcsum > fTriggerSetup->GetThresholdJetHigh()) triggerBits |= 1 << fTriggerSetup->GetTriggerBitConfiguration().GetJetHighBit();
+			if(adcsum > fTriggerSetup->GetThresholdJetLow()) triggerBits |= 1 << fTriggerSetup->GetTriggerBitConfiguration().GetJetLowBit();
+
+			// Set special bit
+			if(triggerBits){
+				rawpatches.push_back(RawPatch(icol, irow, adcsum, triggerBits));
+			}
+		}
+	}
+
+	// sort patches so that the main patch appears first
+	std::sort(rawpatches.begin(), rawpatches.end());
+	return rawpatches;
+}
