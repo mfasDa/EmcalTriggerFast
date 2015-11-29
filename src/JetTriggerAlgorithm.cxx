@@ -77,8 +77,8 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches8x8(const TriggerChannelMa
 	std::vector<RawPatch> rawpatches;
 
 	double adcsum(0);
-	for(int irow = 0; irow < channels->GetNumberOfRows() - 8-1; ++irow){
-		for(int icol = 0; icol < channels->GetNumberOfCols() - 8-1; ++icol){
+	for(int irow = 0; irow < channels->GetNumberOfRows() - 8-1; irow+=4){
+		for(int icol = 0; icol < channels->GetNumberOfCols() - 8-1; icol+=4){
 			// 8x8 window
 			adcsum = 0;
 			for(int jrow = 0; jrow < 8; jrow++)
