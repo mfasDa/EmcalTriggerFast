@@ -80,6 +80,22 @@ public:
 	 */
 	void AddBadChannelDCALPHOS(int col, int row) { fBadChannelsDCALPHOS.AddChannel(col, row); }
 
+	/**
+	 * Get bad channels container
+	 */
+	TriggerBadChannelContainer GetBadChannelContainerEMCAL() const
+	{
+		return fBadChannelsEMCAL;
+	}
+
+	/**
+	 * Get bad channels container
+	 */
+	TriggerBadChannelContainer GetBadChannelContainerDCALPHOS() const
+	{
+		return fBadChannelsDCALPHOS;
+	}
+
 private:
 	JetTriggerAlgorithm				fJetTrigger;						///< Algorithm finding jet patches on a trigger channel map
 	GammaTriggerAlgorithm			fGammaTrigger;						///< Algorithm finding gamma patches on a trigger channel map

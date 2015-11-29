@@ -89,8 +89,8 @@ public:
     bool operator<(const TriggerChannelPosition &other) const;
 
   private:
-    int	   	                fCol;            ///< Column of the trigger channel
-    int 	                fRow;            ///< Row of the trigger channel
+    int                     fCol;            ///< Column of the trigger channel
+    int                   fRow;            ///< Row of the trigger channel
   };
 
   /**
@@ -101,7 +101,7 @@ public:
   /**
    * Destructor, cleans up the container
    */
-  virtual ~TriggerBadChannelContainer(){}
+  virtual ~TriggerBadChannelContainer() {}
 
   /**
    * Add a new channel with the postion in column and row to the container, In case the channel
@@ -118,6 +118,14 @@ public:
    * @return True if the channel is listed, false otherwise
    */
   bool HasChannel(int col, int row);
+
+  /**
+   * Get Channels
+   */
+  std::vector<TriggerChannelPosition> GetChannels() const
+  {
+    return fChannels;
+  }
 
 private:
   std::vector<TriggerChannelPosition>             fChannels;      ///< Container for listed channels
