@@ -48,8 +48,8 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *
 	std::vector<RawPatch> rawpatches;
 
 	double adcsum(0);
-	for(int irow = 0; irow < channels->GetNumberOfRows() - 15; ++irow){
-		for(int icol = 0; icol < channels->GetNumberOfCols() - 15; ++icol){
+	for(int irow = 0; irow < channels->GetNumberOfRows() - 15; irow+=4){
+		for(int icol = 0; icol < channels->GetNumberOfCols() - 15; icol+=4){
 			// 16x16 window
 			adcsum = 0;
 			for(int jrow = 0; jrow < 16; jrow++)
