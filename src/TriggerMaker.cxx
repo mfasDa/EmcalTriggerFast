@@ -101,7 +101,7 @@ std::vector<RawPatch> TriggerMaker::GetPatches(const int what) {
 
 	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchGA ) {
 		for (std::vector<RawPatch>::iterator patchiter = fGammaDCALPHOS.begin(); patchiter != fGammaDCALPHOS.end(); patchiter++) {
-			if(!fAcceptPHOSPatches && IsPHOSPatch(patchiter->GetColStart(), patchiter->GetRowStart(), 16)) continue;
+			if(!fAcceptPHOSPatches && IsPHOSPatch(patchiter->GetColStart(), patchiter->GetRowStart(), 2)) continue;
 			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
 			result.push_back(*patchiter);
 		}
