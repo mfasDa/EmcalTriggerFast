@@ -16,6 +16,12 @@
 
 class TriggerMaker {
 public:
+	enum {
+		kMinRowPHOS = 0,
+		kMaxRowPHOS = 35,
+		kMinEtaPHOS = 16,
+		kMaxEtaPHOS = 31
+	}
 	TriggerMaker();
 	virtual ~TriggerMaker();
 
@@ -65,6 +71,12 @@ public:
 	void SetTriggerSetup(TriggerSetup &setup) { fTriggerSetup = setup; }
 
 	/**
+	 * Accept patches 100% in PHOS
+	 * @param doAccept switch whether we accept or not
+	 */
+	void SetAcceptPHOSPatches(Bool_t doAccept) { fAcceptPHOSPatches = doAccept; }
+
+	/**
 	 * Add bad channel position in EMCAL in row and col to the list of bad channels.
 	 * Bad channels will be ignored when setting the energy
 	 * @param col Column of the bad channel
@@ -96,6 +108,15 @@ public:
 		return fBadChannelsDCALPHOS;
 	}
 
+	/**
+	 * Check whether patch is in PHOS
+	 * @param col
+	 * @param row
+	 * @param size
+	 * @return
+	 */
+	bool IsPHOSPatch(int col, int row, int size);
+
 private:
 	JetTriggerAlgorithm				fJetTrigger;						///< Algorithm finding jet patches on a trigger channel map
 	GammaTriggerAlgorithm			fGammaTrigger;						///< Algorithm finding gamma patches on a trigger channel map
@@ -106,6 +127,7 @@ private:
 	TriggerBadChannelContainer		fBadChannelsEMCAL;					///< Map with bad EMCAL channels
 	TriggerBadChannelContainer		fBadChannelsDCALPHOS;				///< Map with bad DCAL-PHOS channels
 	bool							fHasRun;
+	bool 							fAcceptPHOSPatches;					///< Accept patches 100% in PHOS
 	std::vector<RawPatch>			fGammaEMCAL;
 	std::vector<RawPatch>			fGammaDCALPHOS;
 	std::vector<RawPatch>			fJetEMCAL;

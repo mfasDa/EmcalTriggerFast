@@ -30,6 +30,7 @@ TriggerMaker::TriggerMaker() :
 	fBadChannelsEMCAL(),
 	fBadChannelsDCALPHOS(),
 	fHasRun(false),
+	fAcceptPHOSPatches(true),
 	fGammaEMCAL(),
 	fGammaDCALPHOS(),
 	fJetEMCAL(),
@@ -100,6 +101,7 @@ std::vector<RawPatch> TriggerMaker::GetPatches(const int what) {
 
 	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchGA ) {
 		for (std::vector<RawPatch>::iterator patchiter = fGammaDCALPHOS.begin(); patchiter != fGammaDCALPHOS.end(); patchiter++) {
+			if(!fAcceptPHOSPatches && IsPHOSPatch(patchiter->GetColStart(), patchiter->GetRowStart(), 16)) continue;
 			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
 			result.push_back(*patchiter);
 		}
@@ -114,6 +116,7 @@ std::vector<RawPatch> TriggerMaker::GetPatches(const int what) {
 
 	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchJE ) {
 		for (std::vector<RawPatch>::iterator patchiter = fJetDCALPHOS.begin(); patchiter != fJetDCALPHOS.end(); patchiter++) {
+			if(!fAcceptPHOSPatches && IsPHOSPatch(patchiter->GetColStart(), patchiter->GetRowStart(), 16)) continue;
 			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
 			result.push_back(*patchiter);
 		}
@@ -128,12 +131,17 @@ std::vector<RawPatch> TriggerMaker::GetPatches(const int what) {
 
 	if (what == RawPatch::kAny || what == RawPatch::kDCALpatchJE8x8 ) {
 		for (std::vector<RawPatch>::iterator patchiter = fJetDCALPHOS8x8.begin(); patchiter != fJetDCALPHOS8x8.end(); patchiter++) {
+			if(!fAcceptPHOSPatches && IsPHOSPatch(patchiter->GetColStart(), patchiter->GetRowStart(), 8)) continue;
 			patchiter->SetPatchType(RawPatch::kDCALPHOSpatch);
 			result.push_back(*patchiter);
 		}
 	}
 
 	return result;
+}
+
+bool TriggerMaker::IsPHOSPatch(int col, int row, int size){
+	return (col >= kMinEtaPHOS) && (col+size <kMaxEtaPHOS) && (row >= kMinRowPHOS) && (row+size < kMaxRowPHOS);
 }
 
 RawPatch TriggerMaker::GetMaxGammaEMCAL()
