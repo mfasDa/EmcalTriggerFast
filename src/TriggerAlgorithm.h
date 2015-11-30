@@ -37,11 +37,13 @@ public:
 		kDCALpatchJE8x8,				
 		kUndefPatch
 	};
+
 	RawPatch():
-		fCol(-1.),
-		fRow(-1.),
+		fCol(0),
+		fRow(0),
 		fADC(-1.),
 		fTriggerBits(0),
+		fPatchSize(0),
 		fPatchType(kUndefPatch)
 	{}
 	/**
