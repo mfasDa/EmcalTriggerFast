@@ -26,3 +26,9 @@ TriggerAlgorithm::TriggerAlgorithm() :
 fTriggerSetup(NULL)
 {
 }
+
+int RawPatch::GetUniqueID() const {
+	// normalize row and col by the index of the subregion
+	int subregionSize  = ((fPatchSize == 16) || (fPatchSize == 8)) ? 4 : 1, neta = 48/subregionSize;
+	return int(fCol)/subregionSize + int(fRow)/subregionSize * neta;
+}

@@ -48,12 +48,12 @@ std::vector<RawPatch> GammaTriggerAlgorithm::FindPatches(const TriggerChannelMap
 	std::vector<RawPatch> rawpatches;
 
 	double adcsum(0);
-	for(int irow = 0; irow < channels->GetNumberOfRows() - 1; ++irow){
-		for(int icol = 0; icol < channels->GetNumberOfCols() - 1; ++icol){
+	for(unsigned char irow = 0; irow < channels->GetNumberOfRows() - 1; ++irow){
+		for(unsigned char icol = 0; icol < channels->GetNumberOfCols() - 1; ++icol){
 			// 2x2 window
 			adcsum = 0;
-			for(int jrow = 0; jrow < 2; jrow++)
-				for(int jcol = 0; jcol < 2; jcol++)
+			for(unsigned char jrow = 0; jrow < 2; jrow++)
+				for(unsigned char jcol = 0; jcol < 2; jcol++)
 					adcsum += channels->GetADC(icol + jcol, irow + jrow);
 
 			// make decision, low and high threshold
@@ -63,7 +63,9 @@ std::vector<RawPatch> GammaTriggerAlgorithm::FindPatches(const TriggerChannelMap
 
 			// Set special bit
 			if(triggerBits){
-				rawpatches.push_back(RawPatch(icol, irow, adcsum, triggerBits));
+				RawPatch patch(icol, irow, adcsum, triggerBits);
+				patch.SetPatchSize(2);
+				rawpatches.push_back(patch);
 			}
 		}
 	}

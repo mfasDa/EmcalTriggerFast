@@ -50,11 +50,12 @@ public:
 	 * @param row Starting row
 	 * @param adc Patch amplitude
 	 */
-	RawPatch(int col, int row, double adc, int triggerBits):
+	RawPatch(unsigned char col, unsigned char row, double adc, unsigned int triggerBits):
 		fCol(col),
 		fRow(row),
 		fADC(adc),
 		fTriggerBits(triggerBits),
+		fPatchSize(0),
 		fPatchType(kUndefPatch)
 	{}
 	/**
@@ -78,20 +79,32 @@ public:
 	void SetPatchType(Patchtype ptype) { fPatchType = ptype; }
 
 	/**
+	 * Set the size of the patch
+	 * @param patchsize
+	 */
+	void SetPatchSize(unsigned char patchsize) { fPatchSize = patchsize; }
+
+	/**
 	 * Get starting row of the patch
 	 * @return starting row
 	 */
-	int GetRowStart() const { return fRow; }
+	unsigned char GetRowStart() const { return fRow; }
 	/**
 	 * Get Starting column of the patch
 	 * @return starting column
 	 */
-	int GetColStart() const { return fCol; }
+	unsigned char GetColStart() const { return fCol; }
 	/**
 	 * Get the patch amplitude
 	 * @return the patch amplitude
 	 */
 	double GetADC() const { return fADC; }
+
+	/**
+	 * Get the size of the patch
+	 * @return size of the patch
+	 */
+	unsigned char GetPatchSize() const { return fPatchSize; }
 
 	/**
 	 * Get the trigger bits
@@ -110,12 +123,19 @@ public:
 	 */
 	bool IsDCALPHOS() const { return fPatchType == kDCALPHOSpatch; }
 
+	/**
+	 * Get unique ID of the patch, calculated, from col, row and subregion size
+	 * @return Unique ID of the patch;
+	 */
+	int GetUniqueID() const;
+
 private:
-	int         fCol;           ///< Lower left column in col-row coordinate space
-	int         fRow;           ///< Lower left row in col-row coordinate space
-	double      fADC;           ///< ADC value of the raw patch
-	int         fTriggerBits;   ///< Tigger bit settings
-	Patchtype	fPatchType;		///< Type of the trigger patch
+	unsigned char         	fCol;           ///< Lower left column in col-row coordinate space
+	unsigned char      		fRow;           ///< Lower left row in col-row coordinate space
+	double      			fADC;           ///< ADC value of the raw patch
+	unsigned int         	fTriggerBits;   ///< Tigger bit settings
+	unsigned char			fPatchSize;	    ///< Patch size
+	Patchtype				fPatchType;		///< Type of the trigger patch
 };
 
 /**

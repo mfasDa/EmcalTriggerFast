@@ -48,12 +48,12 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *
 	std::vector<RawPatch> rawpatches;
 
 	double adcsum(0);
-	for(int irow = 0; irow < channels->GetNumberOfRows() - 15; irow+=4){
-		for(int icol = 0; icol < channels->GetNumberOfCols() - 15; icol+=4){
+	for(unsigned char irow = 0; irow < channels->GetNumberOfRows() - 15; irow+=4){
+		for(unsigned char icol = 0; icol < channels->GetNumberOfCols() - 15; icol+=4){
 			// 16x16 window
 			adcsum = 0;
-			for(int jrow = 0; jrow < 16; jrow++)
-				for(int jcol = 0; jcol < 16; jcol++)
+			for(unsigned char jrow = 0; jrow < 16; jrow++)
+				for(unsigned char jcol = 0; jcol < 16; jcol++)
 					adcsum += channels->GetADC(icol + jcol, irow + jrow);
 
 			// make decision, low and high threshold
@@ -63,7 +63,9 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches(const TriggerChannelMap *
 
 			// Set special bit
 			if(triggerBits){
-				rawpatches.push_back(RawPatch(icol, irow, adcsum, triggerBits));
+				RawPatch patch(icol, irow, adcsum, triggerBits);
+				patch.SetPatchSize(16);
+				rawpatches.push_back(patch);
 			}
 		}
 	}
@@ -77,12 +79,12 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches8x8(const TriggerChannelMa
 	std::vector<RawPatch> rawpatches;
 
 	double adcsum(0);
-	for(int irow = 0; irow < channels->GetNumberOfRows() - 8-1; irow+=4){
-		for(int icol = 0; icol < channels->GetNumberOfCols() - 8-1; icol+=4){
+	for(unsigned char irow = 0; irow < channels->GetNumberOfRows() - 8-1; irow+=4){
+		for(unsigned char icol = 0; icol < channels->GetNumberOfCols() - 8-1; icol+=4){
 			// 8x8 window
 			adcsum = 0;
-			for(int jrow = 0; jrow < 8; jrow++)
-				for(int jcol = 0; jcol < 8; jcol++)
+			for(unsigned char jrow = 0; jrow < 8; jrow++)
+				for(unsigned char jcol = 0; jcol < 8; jcol++)
 					adcsum += channels->GetADC(icol + jcol, irow + jrow);
 
 			// make decision, low and high threshold
@@ -92,7 +94,9 @@ std::vector<RawPatch> JetTriggerAlgorithm::FindPatches8x8(const TriggerChannelMa
 
 			// Set special bit
 			if(triggerBits){
-				rawpatches.push_back(RawPatch(icol, irow, adcsum, triggerBits));
+				RawPatch patch(icol, irow, adcsum, triggerBits);
+				patch.SetPatchSize(8);
+				rawpatches.push_back(patch);
 			}
 		}
 	}
