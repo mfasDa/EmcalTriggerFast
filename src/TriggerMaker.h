@@ -21,7 +21,8 @@ public:
 		kMaxRowPHOS = 35,
 		kMinEtaPHOS = 16,
 		kMaxEtaPHOS = 31
-	}
+	};
+	
 	TriggerMaker();
 	virtual ~TriggerMaker();
 
@@ -74,7 +75,7 @@ public:
 	 * Accept patches 100% in PHOS
 	 * @param doAccept switch whether we accept or not
 	 */
-	void SetAcceptPHOSPatches(Bool_t doAccept) { fAcceptPHOSPatches = doAccept; }
+	void SetAcceptPHOSPatches(bool doAccept) { fAcceptPHOSPatches = doAccept; }
 
 	/**
 	 * Add bad channel position in EMCAL in row and col to the list of bad channels.
